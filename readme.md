@@ -5,8 +5,14 @@ An end-to-end project to automatically collect, update, and visualize daily weat
 ---
 
 ## 📂 Project Structure
-
-
+<pre>   
+  ├── Weather_Data/   
+     └── ... City_Name/   
+     └── ... City_Name_YYYY-MM.csv ← Month-wise weather data 
+  ├── weather_module.py ← Handles fetching & updating data 
+  ├── Automated file.py ← Automates update for all cities 
+  ├── Dashtrial2.py ← Dash dashboard for visualization 
+</pre>
 
 
 
