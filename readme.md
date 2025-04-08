@@ -11,7 +11,7 @@ An end-to-end project to automatically collect, update, and visualize daily weat
      └── ... City_Name_YYYY-MM.csv ← Month-wise weather data 
   ├── weather_module.py ← Handles fetching & updating data 
   ├── Automated file.py ← Automates update for all cities 
-  ├── Dashtrial2.py ← Dash dashboard for visualization 
+  ├── Dashboard.py ← Dash dashboard for visualization 
 </pre>
 
 
@@ -157,7 +157,7 @@ if __name__ == "__main__":
 
   '''
 
-###  3. Interactive Dashboard (`Dashtrial2.py`)
+###  3. Interactive Dashboard (`Dashboard.py`)
 - Built with Plotly Dash.
 - Visualizes temperature, humidity, pressure, and more.
 - Allows:
