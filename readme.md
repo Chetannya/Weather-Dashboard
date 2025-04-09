@@ -29,10 +29,8 @@ An end-to-end project to automatically collect, update, and visualize daily weat
   '''
   ###Modules to import
   import os
-import requests
 import pandas as pd
 import csv
-import numpy as np
 import urllib.request
 import sys
 import codecs
@@ -124,7 +122,7 @@ if __name__ == "__main__":
   '''
   import os
 import weather_module  # Importing the weather data module
-from datetime import datetime
+
 
 API_KEY = "9EEDESZ5UR6AYN6RQ3MDNXTHW"
 CITIES_FOLDER = r"C:\Users\AVITA\Documents\Chetannya\SEM 2 @ WA\Weather_Data"
