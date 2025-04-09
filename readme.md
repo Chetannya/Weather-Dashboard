@@ -167,9 +167,6 @@ if __name__ == "__main__":
 
 '''
 
-"""
-
-"""
 
 import dash
 from dash import dcc, html, Input, Output
@@ -233,7 +230,12 @@ app.layout = html.Div([
                             'background-color': '#007bff', 'color': 'white',
                             'border': 'none', 'border-radius': '5px', 
                             'cursor': 'pointer', 'font-size': '16px', 'font-weight': 'bold'
-                        })
+                        }),
+            html.Button("Solar Data", id='toggle-solar-cloud', n_clicks=0,
+                        style={'width': '100%', 'padding': '10px', 'margin-top': '10px',
+                               'background-color': '#20c997', 'color': 'white',
+                               'border': 'none', 'border-radius': '5px',
+                               'cursor': 'pointer', 'font-size': '16px', 'font-weight': 'bold'})
         ], style={'width': '25%', 'padding': '20px', 'background': '#eef', 'display': 'flex', 'flex-direction': 'column', 'align-items': 'center'}),
 
         # Right Panel: Graphs with collapsible sections
@@ -246,6 +248,13 @@ app.layout = html.Div([
                     dcc.Tab(label='Precipitation Data', value='precip')
                 ]),
                 html.Div(id='wind-precip-content')
+            ]),
+            html.Div(id='solar-cloud-section', style={'display': 'none'}, children=[
+                dcc.Tabs(id='solar-cloud-tabs', value='solar', children=[
+                    dcc.Tab(label='Solar Energy', value='solar'),
+                    dcc.Tab(label='Visibility (as Pseudo Cloudiness)', value='visibility')
+                ]),
+                html.Div(id='solar-cloud-content')
             ])
         ], style={'width': '73%', 'padding': '20px'})
     ], style={'display': 'flex'})
@@ -357,6 +366,42 @@ def update_wind_precip_tabs(tab, city, start_date, end_date):
        
     
     return html.Div()
+
+@app.callback(
+    Output('solar-cloud-section', 'style'),
+    [Input('toggle-solar-cloud', 'n_clicks')]
+)
+def toggle_solar_cloud_section(n_clicks):
+    return {'display': 'block' if n_clicks % 2 == 1 else 'none'}
+
+@app.callback(
+    Output('solar-cloud-content', 'children'),
+    [Input('solar-cloud-tabs', 'value'),
+     Input('city-dropdown', 'value'),
+     Input('date-picker', 'start_date'),
+     Input('date-picker', 'end_date')]
+)
+def update_solar_cloud_tabs(tab, city, start_date, end_date):
+    if not city:
+        return html.Div("Select a city to view data")
+
+    city_folder = os.path.join(DATA_FOLDER, city) 
+    all_files = [f for f in os.listdir(city_folder) if f.endswith(".csv")]
+    df_list = []
+    for file in all_files:
+        file_path = os.path.join(city_folder, file)
+        df = pd.read_csv(file_path)
+        df['datetime'] = pd.to_datetime(df['datetime'])
+        df_list.append(df)
+
+    df = pd.concat(df_list, ignore_index=True)
+    filtered_data = df[(df['datetime'] >= start_date) & (df['datetime'] <= end_date)]
+
+    if tab == 'solar':
+        return dcc.Graph(figure=px.line(filtered_data, x='datetime', y='solarenergy', title='Solar Energy'))
+    elif tab == 'visibility':
+        filtered_data['pseudo_cloudiness'] = 100 - filtered_data['visibility']
+        return dcc.Graph(figure=px.area(filtered_data, x='datetime', y='pseudo_cloudiness', title='Pseudo Cloudiness (100 - Visibility)'))
 
 if __name__ == '__main__':
     app.run(debug=True)
