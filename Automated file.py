@@ -2,7 +2,7 @@ import os
 import weather_module  # Importing the weather data module
 
 
-API_KEY = "9EEDESZ5UR6AYN6RQ3MDNXTHW"
+API_KEY = "XXXXXXXXXXXXXXXXXX"
 CITIES_FOLDER = r"C:\Users\AVITA\Documents\Chetannya\SEM 2 @ WA\Weather_Data"
 
 # Function to get cities from existing folders
