@@ -75,9 +75,3 @@ def update_existing_data(city, api_key):
             new_data.to_csv(filename, index=False)
             print(f"New data file created: {filename}")
 
-
-# Main execution
-if __name__ == "__main__":
-    API_KEY = "9EEDESZ5UR6AYN6RQ3MDNXTHW"  # Updated API key
-    CITY = "Puttaparthi"
-    update_existing_data(CITY, API_KEY)
